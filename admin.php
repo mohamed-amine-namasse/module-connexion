@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page d'inscription</title>
+    <title>Page d'administration</title>
     <link rel="stylesheet" href="./assets/css/style.css" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,6 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap" rel="stylesheet">
+
 
 
 
@@ -37,34 +38,52 @@
 
         <nav class="container_menu">
             <a class="#" href="./index.php">Accueil</a>
-            <a class="#" href="./connexion.php">Se connecter </a>
-            <a class="active" href="./inscription.php">Créer compte</a>
+            <a class="#" href="./profil.php">Ton profil </a>
+            <a class="active" href="./admin.php">Admin </a>
+            <a class="#" href="deconnexion.php">Déconnexion</a>
         </nav>
     </header>
 
     <main>
 
 
+        <?php
+        
+        
+        //on établit la connexion avec la base de donnée moduleconnexion
+        $connexion = mysqli_connect('localhost', 'root');
+        mysqli_select_db($connexion, 'moduleconnexion'); 
+      
+        
+        
+        // On fait une requete SQL pour insérer l'ensemble des informations de la table utilisateurs   
+        $command= "SELECT * FROM utilisateurs ";
+        $result = mysqli_query($connexion, $command);
+        ?>
+        <h2> Liste des utilisateurs</h2>
+        <table>
 
-        <div class=container_form>
-            <h2>Création de compte</h2>
-            <br>
-            <form id=form action="connexion.php" method="post">
-                <label><b>Login:</b></label><br>
-                <input type="text" name="login"><br>
-                <label><b>Prenom:</b></label><br>
-                <input type="text" name="prenom"><br>
-                <label><b>Nom:</b></label><br>
-                <input type="text" name="nom"><br>
-                <label><b>Password:</b></label><br>
-                <input type="text" name="password"><br>
-                <label><b>Confirmation Password:</b></label><br>
-                <input type="text" name="confirm_password"><br><br>
-                <input class=bouton_submit type="submit" value="Envoyer">
+            <tr>
+                <?php        //on recupère le header de notre table 
+            $fields = mysqli_fetch_fields($result);
+            foreach ($fields as $field) {
+            echo"<th>".htmlspecialchars($field->name)."</th>";}
+            ?>
+            </tr>
+            <?php    //on recupère le body de notre table
+            while ($row = mysqli_fetch_assoc($result)) {
+            echo "<tr>";
+            foreach ($fields as $field) {
+            $fieldName = $field->name;
+            echo "<td>" . htmlspecialchars($row[$fieldName]) . "</td>";
+            }
+            echo"</tr>";
+            }
+            
+            ?>
 
-            </form>
+        </table>
 
-        </div>
 
 
 
