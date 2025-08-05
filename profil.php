@@ -43,14 +43,17 @@
             // On utilise password_verify pour vérifier le mot de passe haché
             $command = "SELECT * FROM utilisateurs WHERE login='$login' ";
             $result = mysqli_query($connexion, $command);
-            $donnee = mysqli_fetch_assoc($result);
-            
-            if ($donnee && password_verify($password, $donnee['password'])) {
+            $user = mysqli_fetch_assoc($result);
+
+            if ($user && password_verify($password, $user['password'])) {
                 $message3 = 'Bienvenue ' . $login . ' ! Tu es connecté!';
                 $_SESSION['login'] = $login;
-                $_SESSION['password'] = $password;
+                // On remplit $donnee SEULEMENT si la connexion est réussie
+                $donnee = $user;
             } else {
                 $message3 = "Erreur : login ou mot de passe incorrect.";
+                // $donnee reste vide, donc le formulaire reste vide
+                $donnee = null;
             }
             }
            
