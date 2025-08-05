@@ -57,7 +57,7 @@
         
         
         // On fait une requete SQL pour insérer l'ensemble des informations de la table utilisateurs   
-        $command= "SELECT * FROM utilisateurs ";
+        $command= "SELECT id,login,prenom,nom FROM utilisateurs ";
         $result = mysqli_query($connexion, $command);
         ?>
         <h2> Liste des utilisateurs</h2>

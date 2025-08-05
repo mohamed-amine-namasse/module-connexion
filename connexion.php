@@ -97,18 +97,20 @@
         //Si les champs ne sont pas vides, on insère les données dans la base de données
         if(!empty($login) && !empty($prenom) && !empty($nom) && !empty($password) &&
         !empty($_POST["confirm_password"]) && ($_POST["password"]==$_POST["confirm_password"])) {
-        // Vérifie si le login existe déjà
-        $check = "SELECT * FROM utilisateurs WHERE login='$login'";
-        $check_result = mysqli_query($connexion, $check);
-        if(mysqli_num_rows($check_result) > 0) {
-        $message = "Ce login existe déjà, veuillez en choisir un autre.";
-        echo "<p>$message</p>";
-        } else {
-        $command = "INSERT INTO utilisateurs (id,login,prenom,nom,password) VALUES (0,'$login','$prenom','$nom','$password')";
-        $result = mysqli_query($connexion, $command);
-        $message = 'Parfait, ton utilisateur a bien été créé!';
-        echo "<p>$message</p>";
-    }
+            // Vérifie si le login existe déjà
+            $check = "SELECT * FROM utilisateurs WHERE login='$login'";
+            $check_result = mysqli_query($connexion, $check);
+            if(mysqli_num_rows($check_result) > 0) {
+                $message = "Ce login existe déjà, veuillez en choisir un autre.";
+                echo "<p>$message</p>";
+            } else {
+                // Hash du mot de passe
+                $password_hash = password_hash($password, PASSWORD_DEFAULT);
+                $command = "INSERT INTO utilisateurs (id,login,prenom,nom,password) VALUES (0,'$login','$prenom','$nom','$password_hash')";
+                $result = mysqli_query($connexion, $command);
+                $message = 'Parfait, ton utilisateur a bien été créé!';
+                echo "<p>$message</p>";
+            }
 }
             
        

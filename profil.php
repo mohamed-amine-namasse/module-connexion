@@ -38,10 +38,14 @@
             mysqli_select_db($connexion, 'moduleconnexion');
             $login =$_POST['login'];
             $password =  $_POST['password'];
-            $command = "SELECT * FROM utilisateurs WHERE login='$login' AND password='$password'";
+            // On fait une requete SQL pour insérer l'ensemble des informations de la table utilisateurs
+            // On vérifie si le login et le mot de passe correspondent à un utilisateur dans la base de données
+            // On utilise password_verify pour vérifier le mot de passe haché
+            $command = "SELECT * FROM utilisateurs WHERE login='$login' ";
             $result = mysqli_query($connexion, $command);
             $donnee = mysqli_fetch_assoc($result);
-            if ($donnee) {
+            
+            if ($donnee && password_verify($password, $donnee['password'])) {
                 $message3 = 'Bienvenue ' . $login . ' ! Tu es connecté!';
                 $_SESSION['login'] = $login;
                 $_SESSION['password'] = $password;
@@ -99,7 +103,9 @@
             <?php if (isset($_SESSION['login']) && isset($_SESSION['password']) && $_SESSION['login'] === 'admin' && $_SESSION['password'] === 'admin'): ?>
             <a class="#" href="./admin.php">Admin</a>
             <?php endif; ?>
+            <?php if (isset($_SESSION['login'])): ?>
             <a href="deconnexion.php">Déconnexion</a>
+            <?php endif; ?>
         </nav>
     </header>
 
@@ -120,22 +126,14 @@
         //on établit la connexion avec la base de donnée moduleconnexion
         $connexion = mysqli_connect('localhost', 'root');
         mysqli_select_db($connexion, 'moduleconnexion'); 
-      
+        if (!isset($donnee) && isset($_SESSION['login'])) {
+        $login = $_SESSION['login'];
+        $command = "SELECT * FROM utilisateurs WHERE login='$login'";
+        $result = mysqli_query($connexion, $command);
+        $donnee = mysqli_fetch_assoc($result);
+}
         
-        if (isset($_POST["login"])&& isset($_POST["password"])){
-            $login=$_POST["login"];
-            $password=$_POST["password"];
         
-       
-       if(!empty($login) && !empty($password)) {
-        // On fait une requete SQL pour insérer l'ensemble des informations de la table utilisateurs   
-        $command= "SELECT * FROM utilisateurs WHERE login='$login' AND password='$password'";
-        $result = mysqli_query($connexion, $command); 
-
-        $donnee=mysqli_fetch_assoc($result);
-        
-       }
-    }
         
 
 ?>
@@ -155,7 +153,7 @@
                 <label><b>Nom:</b></label><br>
                 <input type="text" name="nom" value=<?php  if (isset($donnee)){ echo $donnee['nom'];} ?>><br>
                 <label><b>Password:</b></label><br>
-                <input type="text" name="password" value=<?php  if (isset($donnee)){ echo $donnee['password'];} ?>><br>
+                <input type="text" name="password" value="" ?><br>
                 <input class=bouton_submit type="submit" value="Modifier">
 
             </form>
@@ -177,7 +175,10 @@
         $password = $_POST["password"];
 
       
-        $update = "UPDATE utilisateurs SET login='$login', prenom='$prenom', nom='$nom', password='$password' WHERE id='$id'";
+        
+        
+        $password_hash = password_hash($password, PASSWORD_DEFAULT);
+        $update = "UPDATE utilisateurs SET login='$login', prenom='$prenom', nom='$nom', password='$password_hash' WHERE id='$id'";
         if (mysqli_query($connexion, $update)) {
             $message3 = "Votre profil mis à jour avec succès !";
             echo "<p>$message3</p>";
