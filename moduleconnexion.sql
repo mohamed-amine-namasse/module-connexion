@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 05, 2025 at 02:43 PM
+-- Generation Time: Aug 06, 2025 at 07:13 AM
 -- Server version: 8.0.42
 -- PHP Version: 8.3.16
 
@@ -41,7 +41,8 @@ CREATE TABLE `utilisateurs` (
 
 INSERT INTO `utilisateurs` (`id`, `login`, `prenom`, `nom`, `password`) VALUES
 (43, 'admin', 'admin', 'admin', '$2y$10$Crh1/t.uA97oKSd3QFuQHuBZTCFn3b3OHf.VJHmGyq9NTa8aiJa7G'),
-(44, 'cool', 'cool', 'cool', '$2y$10$wQ/oes0JhpLKTEQnv1GxdO8LsLhRA77HtBUHswqsvsnKen7bxZ6wW');
+(44, 'cool', 'cool', 'cool', '$2y$10$wQ/oes0JhpLKTEQnv1GxdO8LsLhRA77HtBUHswqsvsnKen7bxZ6wW'),
+(45, 'marc', 'marc', 'marc', '$2y$10$ZpO.twpT/N1Ng1.eJkBinO4EfVHQ2eLMa0OlO/iF00D5n3cu75mt.');
 
 --
 -- Indexes for dumped tables
@@ -61,7 +62,7 @@ ALTER TABLE `utilisateurs`
 -- AUTO_INCREMENT for table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
