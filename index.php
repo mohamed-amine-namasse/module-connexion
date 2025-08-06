@@ -47,10 +47,7 @@
                     <a class="#" href="./inscription.php">Créer compte</a>
                     <?php else: ?>
                     <a href="./profil.php">Ton profil</a>
-                    <?php if (
-                        isset($_SESSION['login']) && isset($_SESSION['password']) &&
-                        $_SESSION['login'] === 'admin' && $_SESSION['password'] === 'admin'
-                    ): ?>
+                    <?php if (isset($_SESSION['login']) && $_SESSION['login'] === 'admin'): ?>
                     <a class="#" href="./admin.php">Admin</a>
                     <?php endif; ?>
                     <a class="#" href="deconnexion.php">Déconnexion</a>

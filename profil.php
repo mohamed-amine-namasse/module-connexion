@@ -103,7 +103,7 @@
         <nav class="container_menu">
             <a class="#" href="./index.php">Accueil</a>
             <a class="active" href="./profil.php">Ton profil </a>
-            <?php if (isset($_SESSION['login']) && isset($_SESSION['password']) && $_SESSION['login'] === 'admin' && $_SESSION['password'] === 'admin'): ?>
+            <?php if (isset($_SESSION['login']) && $_SESSION['login'] === 'admin'): ?>
             <a class="#" href="./admin.php">Admin</a>
             <?php endif; ?>
             <?php if (isset($_SESSION['login'])): ?>
